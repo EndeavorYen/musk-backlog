@@ -141,6 +141,36 @@ def main() -> int:
     )
     check("body then stop", "then stop" in body_l)
     check(
+        "body stamps board:backlog on create when any board:* label is defined",
+        "board:backlog" in body
+        and "board:*" in body
+        and "create" in body_l
+        and "defined" in body_l,
+    )
+    check(
+        "body does not stamp when no board:* defined",
+        "do not add `board:backlog`" in body_l or "do not add board:backlog" in body_l,
+    )
+    check(
+        "body stamp on create only, no backfill",
+        "create only" in body_l and "backfill" in body_l,
+    )
+    check(
+        "body GitHub create and stamp",
+        "github" in body_l and "stamp" in body_l and "board:backlog" in body,
+    )
+    check(
+        "body GitLab create and stamp",
+        "gitlab" in body_l and "stamp" in body_l and "board:backlog" in body,
+    )
+    check(
+        "body GitLab stamp failure fails that create",
+        "gitlab" in body_l
+        and "stamp" in body_l
+        and ("fails" in body_l or "fail" in body_l)
+        and "silent" in body_l,
+    )
+    check(
         "body does not open a pull request or merge request",
         "does not open a pull request" in body_l and "merge request" in body_l,
     )
