@@ -90,6 +90,12 @@ Default branch is whatever the repo uses. Do not assume main.
 After listing the table: create tracker items only if that forge has a
 usable tracker and credentials.
 
+When creating a tracker item on GitHub or GitLab: if the target forge
+has any defined `board:*` label, stamp `board:backlog` on that new item.
+If no `board:*` label is defined, do not add `board:backlog`. Stamp on
+create only. Do not backfill existing issues. If GitLab stamp fails,
+that create fails. Do not silent-skip GitLab.
+
 No tracker / no credentials / other-or-none -> the conversation table is
 success, not failure.
 
@@ -127,3 +133,5 @@ Reject these and continue (or stop, when the job is already done):
 - "accelerate:no / automate:no still need tickets" — no item for speeding or automating.
 - "Write a file so we remember" — do not write a file to preserve memory.
 - "The remote is other, invent a GitHub repo" — never invent a GitHub repo.
+- "GitLab stamp failed, skip the label" — if GitLab stamp fails, that create fails. Do not silent-skip GitLab.
+- "Backfill old issues onto the board" — stamp on create only. Do not backfill existing issues.
