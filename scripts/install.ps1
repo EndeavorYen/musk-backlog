@@ -1,7 +1,7 @@
 #Requires -Version 5.1
 param(
     [Parameter(Position = 0)]
-    [ValidateSet('grok', 'claude', 'cursor', 'hermes', 'all')]
+    [ValidateSet('grok', 'claude', 'cursor', 'hermes', 'gemini', 'antigravity', 'antigravity-cli', 'all')]
     [string]$Platform = 'all'
 )
 
@@ -20,6 +20,9 @@ function Get-UserHome {
 }
 
 function Get-Dest([string]$Name) {
+    if ($env:UPDATE_HARNESS_SKILLS) {
+        return (Join-Path $env:UPDATE_HARNESS_SKILLS 'musk-backlog')
+    }
     $homeDir = Get-UserHome
     switch ($Name) {
         'grok' {
@@ -32,6 +35,9 @@ function Get-Dest([string]$Name) {
         }
         'claude' { return (Join-Path $homeDir '.claude\skills\musk-backlog') }
         'cursor' { return (Join-Path $homeDir '.cursor\skills\musk-backlog') }
+        'gemini' { return (Join-Path $homeDir '.gemini\config\skills\musk-backlog') }
+        'antigravity' { return (Join-Path $homeDir '.gemini\antigravity\skills\musk-backlog') }
+        'antigravity-cli' { return (Join-Path $homeDir '.gemini\antigravity-cli\skills\musk-backlog') }
         default { throw "Unknown platform $Name" }
     }
 }
@@ -53,5 +59,5 @@ function Install-To([string]$Name) {
     Write-Output "Installed $Name -> $dest"
 }
 
-$targets = if ($Platform -eq 'all') { @('grok', 'claude', 'cursor', 'hermes') } else { @($Platform) }
+$targets = if ($Platform -eq 'all') { @('grok', 'claude', 'cursor', 'hermes', 'gemini', 'antigravity', 'antigravity-cli') } else { @($Platform) }
 foreach ($t in $targets) { Install-To $t }
